@@ -6,6 +6,7 @@ import CartInfo from "./CartInfo";
 import { useState } from "react";
 import Cart from "./Cart";
 import Header from "./Header";
+import { connect } from 'react-redux'
 
 export interface ItemData {
   quantity: number,
@@ -155,4 +156,7 @@ const Body = () => {
     </>
   )
 }
+
+Body = connect()(Body);
+
 export default Body;
