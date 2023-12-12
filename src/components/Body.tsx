@@ -7,6 +7,10 @@ import { useState } from "react";
 import Cart from "./Cart";
 import Header from "./Header";
 import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { NewState } from '../types'
+import { RootState, Dispatch } from '../main'
+
 
 export interface ItemData {
   quantity: number,
@@ -25,7 +29,7 @@ export interface itemDeleteObj {
   listName: "cartList" | "itemList"
 }
 const Body = () => {
-  const [itemList, setItemList] = useState<ItemData[]>(defaultProducts)
+  // const [itemList, setItemList] = useState<NewState>(defaultProducts)
   const [pageView, setPageView] = useState<number>(0)
   const [previousPageView, setPreviousPageView] = useState<number>(0)
   const [selectedItem, setSelectedItem] = useState<string>("")
@@ -35,12 +39,27 @@ const Body = () => {
     setPreviousPageView(pageView)
     setPageView(pageNumber);
   }
+  // const { dispatch } = useDispatch();
+
   const addNewItem = (formData: ItemData) => {
-    if (itemList.filter(el => el.id === formData.id)[0]) {
-      setItemList(itemList => itemList.map(el => (el.id === formData.id ? formData : el)))
-    } else {
-      setItemList(oldList => [...oldList, formData])
+
+    const dispatch = useDispatch()
+    const { quantity, price, image, title, description, id } = formData;
+    const action = {
+      type: 'ADD_ITEM',
+      id: id,
+      quantity: quantity,
+      price: price,
+      image: image,
+      title: title,
+      description: description,
     }
+    dispatch(action)
+    // if (itemList.filter(el => el.id === formData.id)[0]) {
+    //   setItemList(itemList => itemList.map(el => (el.id === formData.id ? formData : el)))
+    // } else {
+    //   setItemList(oldList => [...oldList, formData])
+    // }
     pageChange(0);
   }
   const displayItemSpecifics = (id: string) => {
@@ -157,6 +176,12 @@ const Body = () => {
   )
 }
 
-Body = connect()(Body);
+// const mapStateToProps = state => {
+//   return {
+//     itemList: state
+//   }
+// }
 
-export default Body;
+const ReduxBody = connect()(Body);
+
+export default ReduxBody;

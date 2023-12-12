@@ -1,3 +1,5 @@
+import { NewState } from '../types'
+
 export const reducer = (state = {}, action: ActionObject) => {
     const { quantity, price, image, title, description, id } = action;
     switch (action.type) {
@@ -34,13 +36,3 @@ export interface ActionObject {
     id: string
 }
 
-interface NewState {
-    [id: string]: {
-        quantity: number
-        price: number
-        image: string
-        title: string
-        description: string
-        id: string
-    }
-}
